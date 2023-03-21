@@ -6,3 +6,6 @@ debug
 .ipynb_checkpoints
 __pycache__
 fairseq
+
+project/*/*/__pretrained/
+project/*/DATA/*/eval/
