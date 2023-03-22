@@ -156,6 +156,9 @@ def obtain_asv_error_rates(tar_asv, non_asv, spoof_asv, asv_threshold):
 
 def compute_det_curve(target_scores, nontarget_scores):
 
+    print(target_scores.size)
+    print(nontarget_scores.size)
+
     n_scores = target_scores.size + nontarget_scores.size
     all_scores = np.concatenate((target_scores, nontarget_scores))
     labels = np.concatenate((np.ones(target_scores.size), 
@@ -548,12 +551,11 @@ def tDCF_wrapper(bonafide_cm_scores, spoof_cm_scores,
     if tar_asv_scores is None or non_asv_scores is None or \
        spoof_asv_scores is None:
         file_name = os.path.dirname(__file__)+ \
-            '/data/asvspoof2019/ASVspoof2019.LA.asv.eval.gi.trl.scores.bin'
+            '/data/asvspoof2021/ASVspoof2021.LA.asv.eval.gi.trl.scores.bin'
         data = nii_io.f_read_raw_mat(file_name, 2)
         tar_asv_scores = data[data[:, 1] == 2, 0]
         non_asv_scores = data[data[:, 1] == 1, 0]
         spoof_asv_scores = data[data[:, 1] == 0, 0]
-    
 
     eer_asv, asv_threshold = compute_eer(tar_asv_scores, non_asv_scores)
     eer_cm, eer_threshold = compute_eer(bonafide_cm_scores, spoof_cm_scores)

@@ -165,29 +165,29 @@ python ${EVALSCRIPT} ${LOGFILE}
 
 #############
 # step 3. train new model, and run evaluation
-echo -e "\n${RED}=======================================================${NC}"
-echo -e "${RED}Step3. train a new model ${MODEL} using your GPU server${NC}"
-echo -e "Current training recipe requires 16GB GPU memory."
-echo -e "If it is too much for your GPU, please reduce --batch-size in */*/00_train.sh before running this step"
-echo -e "The job will run in backgroun for a few hours. Please wait."
-echo -e "You can also run this script in background. See README of this script"
+#echo -e "\n${RED}=======================================================${NC}"
+#echo -e "${RED}Step3. train a new model ${MODEL} using your GPU server${NC}"
+#echo -e "Current training recipe requires 16GB GPU memory."
+#echo -e "If it is too much for your GPU, please reduce --batch-size in */*/00_train.sh before running this step"
+#echo -e "The job will run in backgroun for a few hours. Please wait."
+#echo -e "You can also run this script in background. See README of this script"
 
 # train using prepared script 
 # (notice that random seed is different from different RUN)
-bash 00_train.sh
-echo -e "\n${RED}Please check log_train and log_err{NC}"
+#bash 00_train.sh
+#echo -e "\n${RED}Please check log_train and log_err{NC}"
 
-echo -e "\n${RED}Evaluating the trained model ${NC}"
-echo -e "The job will run in backgroun for ~20 minutes. Please wait."
-LOGFILE=log_output_testset
-python main.py --inference --model-forward-with-file-name > ${LOGFILE} 2>${LOGFILE}_err
+#echo -e "\n${RED}Evaluating the trained model ${NC}"
+#echo -e "The job will run in backgroun for ~20 minutes. Please wait."
+#LOGFILE=log_output_testset
+#python main.py --inference --model-forward-with-file-name > ${LOGFILE} 2>${LOGFILE}_err
 
-echo -e "\n${RED}Please check the following log files \n\t${LOGFILE}\n\t${LOGFILE}_err${NC}"
+#echo -e "\n${RED}Please check the following log files \n\t${LOGFILE}\n\t${LOGFILE}_err${NC}"
 
-echo -e "\n${RED}This is the result produced by your trained model  ${NC}"
-python ${EVALSCRIPT} ${LOGFILE}
+#echo -e "\n${RED}This is the result produced by your trained model  ${NC}"
+#python ${EVALSCRIPT} ${LOGFILE}
 
-echo -e "\nThe result may be different from pre-trained models due to GPU type, Pytorch ver, and so on"
+#echo -e "\nThe result may be different from pre-trained models due to GPU type, Pytorch ver, and so on"
 
 exit 
 

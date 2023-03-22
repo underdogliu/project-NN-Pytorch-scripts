@@ -7,5 +7,5 @@ debug
 __pycache__
 fairseq
 
-project/*/*/__pretrained/
+project/*/*/*/__pretrained/
 project/*/DATA/*/eval/

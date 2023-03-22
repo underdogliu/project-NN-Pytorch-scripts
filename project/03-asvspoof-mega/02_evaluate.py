@@ -45,6 +45,7 @@ def parse_txt(file_path):
 if __name__ == "__main__":
     
     data_path = sys.argv[1]
+    print(data_path)
     bonafide, spoofed = parse_txt(data_path)
     mintDCF, eer, threshold = eval_asvspoof.tDCF_wrapper(bonafide, spoofed)
     print("Score file: {:s}".format(data_path))
