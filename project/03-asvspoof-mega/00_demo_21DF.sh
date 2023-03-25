@@ -49,7 +49,7 @@ EVALSCRIPT=$PWD/02_evaluate.py
 MAINSCRIPT=$PWD/01_main.py
 MAINSCRIPT_RAWNET=$PWD/01_main_rawnet.py
 # configuration to run the model (shared by all the models)
-CONFIGSCRIPT=$PWD/01_config.py
+CONFIGSCRIPT=$PWD/01_config_21DF.py
 CONFIGSCRIPT_RAWNET=$PWD/01_config_rawnet.py
 
 # for convenience, trial length are logged into these binary files

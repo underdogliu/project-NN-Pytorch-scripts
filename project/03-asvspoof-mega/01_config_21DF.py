@@ -82,24 +82,29 @@ minimum_len = None
 # Optional argument
 #  Just a buffer for convenience
 #  It can contain anything
-optional_argument = [tmp + '/protocol.txt']
+# optional_argument = [tmp + '/protocol.txt']
 
 #########################################################
 ## Configuration for inference stage
 #########################################################
 # similar options to training stage
 
+asvspoof2021_test_tmp = os.path.dirname(__file__) + '/../../DATA/asvspoof2021_DF'
+optional_argument = [asvspoof2021_test_tmp + '/protocol.txt']
 
-test_set_name = 'asvspoof2019_test'
+# test_set_name = 'asvspoof2019_test'
+test_set_name = 'asvspoof2021_test_DF'
 
 # List of test set data
 # for convenience, you may directly load test_set list here
-test_list = tmp + '/scp/test.lst'
+# test_list = tmp + '/scp/test.lst'
+test_list = asvspoof2021_test_tmp + '/scp/test.lst'
 
 # Directories for input features
 # input_dirs = [path_of_feature_1, path_of_feature_2, ..., ]
 #  we assume train and validation data are put in the same sub-directory
-test_input_dirs = [tmp + '/eval']
+# test_input_dirs = [tmp + '/eval']
+test_input_dirs = [asvspoof2021_test_tmp + '/eval']
 
 # Directories for output features, which are []
 test_output_dirs = []
