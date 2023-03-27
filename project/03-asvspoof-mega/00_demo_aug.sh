@@ -152,18 +152,18 @@ python ${EVALSCRIPT} ${LOGFILE}
 
 #############
 # step 2. run pre-trained model by Xin and compute EER
-echo -e "\n${RED}=======================================================${NC}"
-echo -e "${RED}Step2. run pre-trained ${MODEL} on eval set using your GPU server${NC}"
-echo -e "The job will run in background for ~20 minutes. Please wait."
-echo -e "(Model ${MODEL} was trained on NII's server.)"
+# echo -e "\n${RED}=======================================================${NC}"
+# echo -e "${RED}Step2. run pre-trained ${MODEL} on eval set using your GPU server${NC}"
+# echo -e "The job will run in background for ~20 minutes. Please wait."
+# echo -e "(Model ${MODEL} was trained on NII's server.)"
 
-LOGFILE=log_output_testset_pretrained
-python main.py --inference --model-forward-with-file-name --trained-model __pretrained/trained_network.pt > ${LOGFILE} 2>${LOGFILE}_err
+# LOGFILE=log_output_testset_pretrained
+# python main.py --inference --model-forward-with-file-name --trained-model __pretrained/trained_network.pt > ${LOGFILE} 2>${LOGFILE}_err
 
-echo -e "\n${RED}Please check the following log files \n\t${LOGFILE}\n\t${LOGFILE}_err${NC}"
+# echo -e "\n${RED}Please check the following log files \n\t${LOGFILE}\n\t${LOGFILE}_err${NC}"
 
-echo -e "\n${RED}This is the result using pre-trained model on your GPU ${NC}"
-python ${EVALSCRIPT} ${LOGFILE}
+# echo -e "\n${RED}This is the result using pre-trained model on your GPU ${NC}"
+# python ${EVALSCRIPT} ${LOGFILE}
 
 #############
 # step 3. train new model, and run evaluation
@@ -181,6 +181,7 @@ echo -e "\n${RED}Please check log_train and log_err{NC}"
 
 echo -e "\n${RED}Evaluating the trained model ${NC}"
 echo -e "The job will run in backgroun for ~20 minutes. Please wait."
+
 LOGFILE=log_output_testset_aug_${AUG_TYPE}
 python main.py --inference --model-forward-with-file-name > ${LOGFILE} 2>${LOGFILE}_err
 
