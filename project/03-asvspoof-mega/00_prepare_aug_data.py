@@ -8,7 +8,7 @@ from shutil import copyfile
 
 
 if __name__ == "__main__":
-    src_augdata_dir = "aug_data/data"
+    src_augdata_dir = "20230327_aug_data/data"
     tar_augdata_dir = "DATA/asvspoof2019_LA"
     aug_sources = ["none", "reverb", "noise", "mp3"]
 
