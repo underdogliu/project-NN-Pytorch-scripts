@@ -49,7 +49,9 @@ EVALSCRIPT=$PWD/02_evaluate.py
 MAINSCRIPT=$PWD/01_main.py
 MAINSCRIPT_RAWNET=$PWD/01_main_rawnet.py
 # configuration to run the model (shared by all the models)
-CONFIGSCRIPT=$PWD/01_config_aug.py
+
+AUG_TYPE=noise
+CONFIGSCRIPT=$PWD/01_config_aug_${AUG_TYPE}.py
 CONFIGSCRIPT_RAWNET=$PWD/01_config_rawnet.py
 
 # for convenience, trial length are logged into these binary files
@@ -179,7 +181,7 @@ echo -e "\n${RED}Please check log_train and log_err{NC}"
 
 echo -e "\n${RED}Evaluating the trained model ${NC}"
 echo -e "The job will run in backgroun for ~20 minutes. Please wait."
-LOGFILE=log_output_testset
+LOGFILE=log_output_testset_aug_${AUG_TYPE}
 python main.py --inference --model-forward-with-file-name > ${LOGFILE} 2>${LOGFILE}_err
 
 echo -e "\n${RED}Please check the following log files \n\t${LOGFILE}\n\t${LOGFILE}_err${NC}"
