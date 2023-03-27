@@ -174,8 +174,8 @@ echo -e "If it is too much for your GPU, please reduce --batch-size in */*/00_tr
 echo -e "The job will run in backgroun for a few hours. Please wait."
 echo -e "You can also run this script in background. See README of this script"
 
-train using prepared script 
-(notice that random seed is different from different RUN)
+# train using prepared script 
+# (notice that random seed is different from different RUN)
 bash 00_train.sh
 echo -e "\n${RED}Please check log_train and log_err{NC}"
 
