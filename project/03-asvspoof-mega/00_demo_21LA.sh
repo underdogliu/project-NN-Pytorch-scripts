@@ -43,7 +43,7 @@ NC='\033[0m'
 ENVFILE=$PWD/../../env.sh
 
 # a wrapper to run EER and min-tDCF, given scores by the model
-EVALSCRIPT=$PWD/02_evaluate.py
+EVALSCRIPT=$PWD/02_evaluate_2021.py
 
 # script of main.py (used by all the models)
 MAINSCRIPT=$PWD/01_main.py
@@ -150,18 +150,18 @@ python ${EVALSCRIPT} ${LOGFILE}
 
 #############
 # step 2. run pre-trained model by Xin and compute EER
-echo -e "\n${RED}=======================================================${NC}"
-echo -e "${RED}Step2. run pre-trained ${MODEL} on eval set using your GPU server${NC}"
-echo -e "The job will run in background for ~20 minutes. Please wait."
-echo -e "(Model ${MODEL} was trained on NII's server.)"
+#echo -e "\n${RED}=======================================================${NC}"
+#echo -e "${RED}Step2. run pre-trained ${MODEL} on eval set using your GPU server${NC}"
+#echo -e "The job will run in background for ~20 minutes. Please wait."
+#echo -e "(Model ${MODEL} was trained on NII's server.)"
 
-LOGFILE=log_output_testset_pretrained_21LA
-python main.py --inference --model-forward-with-file-name --trained-model __pretrained/trained_network.pt > ${LOGFILE} 2>${LOGFILE}_err
+#LOGFILE=log_output_testset_pretrained_21LA
+#python main.py --inference --model-forward-with-file-name --trained-model __pretrained/trained_network.pt > ${LOGFILE} 2>${LOGFILE}_err
 
-echo -e "\n${RED}Please check the following log files \n\t${LOGFILE}\n\t${LOGFILE}_err${NC}"
+#echo -e "\n${RED}Please check the following log files \n\t${LOGFILE}\n\t${LOGFILE}_err${NC}"
 
-echo -e "\n${RED}This is the result using pre-trained model on your GPU ${NC}"
-python ${EVALSCRIPT} ${LOGFILE}
+#echo -e "\n${RED}This is the result using pre-trained model on your GPU ${NC}"
+#python ${EVALSCRIPT} ${LOGFILE}
 
 #############
 # step 3. train new model, and run evaluation
@@ -177,17 +177,18 @@ python ${EVALSCRIPT} ${LOGFILE}
 #bash 00_train.sh
 #echo -e "\n${RED}Please check log_train and log_err{NC}"
 
-#echo -e "\n${RED}Evaluating the trained model ${NC}"
-#echo -e "The job will run in backgroun for ~20 minutes. Please wait."
-#LOGFILE=log_output_testset
-#python main.py --inference --model-forward-with-file-name > ${LOGFILE} 2>${LOGFILE}_err
+echo -e "\n${RED}Evaluating the trained model ${NC}"
+echo -e "The job will run in backgroun for ~20 minutes. Please wait."
 
-#echo -e "\n${RED}Please check the following log files \n\t${LOGFILE}\n\t${LOGFILE}_err${NC}"
+LOGFILE=log_output_testset_21LA
+python main.py --inference --model-forward-with-file-name > ${LOGFILE} 2>${LOGFILE}_err
 
-#echo -e "\n${RED}This is the result produced by your trained model  ${NC}"
-#python ${EVALSCRIPT} ${LOGFILE}
+echo -e "\n${RED}Please check the following log files \n\t${LOGFILE}\n\t${LOGFILE}_err${NC}"
 
-#echo -e "\nThe result may be different from pre-trained models due to GPU type, Pytorch ver, and so on"
+echo -e "\n${RED}This is the result produced by your trained model  ${NC}"
+python ${EVALSCRIPT} ${LOGFILE}
+
+echo -e "\nThe result may be different from pre-trained models due to GPU type, Pytorch ver, and so on"
 
 exit 
 

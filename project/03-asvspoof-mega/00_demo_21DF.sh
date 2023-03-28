@@ -43,7 +43,7 @@ NC='\033[0m'
 ENVFILE=$PWD/../../env.sh
 
 # a wrapper to run EER and min-tDCF, given scores by the model
-EVALSCRIPT=$PWD/02_evaluate.py
+EVALSCRIPT=$PWD/02_evaluate_2021.py
 
 # script of main.py (used by all the models)
 MAINSCRIPT=$PWD/01_main.py

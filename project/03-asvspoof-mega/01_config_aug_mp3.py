@@ -28,7 +28,7 @@ tmp = os.path.dirname(__file__) + "/../../DATA/asvspoof2019_LA"
 
 # File lists (text file, one data name per line, without name extension)
 # trin_file_list: list of files for training set
-trn_list = tmp + "/scp/train_aug_noise.lst"
+trn_list = tmp + "/scp/train_aug_mp3.lst"
 # val_file_list: list of files for validation set. It can be None
 val_list = tmp + "/scp/val.lst"
 
@@ -36,7 +36,7 @@ val_list = tmp + "/scp/val.lst"
 # input_dirs = [path_of_feature_1, path_of_feature_2, ..., ]
 #  we assume train and validation data are put in the same sub-directory
 # input_dirs = [tmp + '/train_dev']
-input_dirs = [tmp + "/train_dev_noise"]
+input_dirs = [tmp + "/train_dev_mp3"]
 
 # Dimensions of input features
 # input_dims = [dimension_of_feature_1, dimension_of_feature_2, ...]

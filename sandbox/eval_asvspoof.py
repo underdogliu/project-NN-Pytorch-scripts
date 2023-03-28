@@ -551,7 +551,7 @@ def tDCF_wrapper(bonafide_cm_scores, spoof_cm_scores,
     if tar_asv_scores is None or non_asv_scores is None or \
        spoof_asv_scores is None:
         file_name = os.path.dirname(__file__)+ \
-            '/data/asvspoof2021/ASVspoof2021.LA.asv.eval.gi.trl.scores.bin'
+            '/data/asvspoof2019/ASVspoof2019.LA.asv.eval.gi.trl.scores.bin'
         data = nii_io.f_read_raw_mat(file_name, 2)
         tar_asv_scores = data[data[:, 1] == 2, 0]
         non_asv_scores = data[data[:, 1] == 1, 0]
@@ -577,6 +577,90 @@ def tDCF_wrapper(bonafide_cm_scores, spoof_cm_scores,
     min_tDCF = tDCF_curve[min_tDCF_index]
     
     return min_tDCF, eer_cm, eer_threshold
+
+
+def tDCF_wrapper_2021(bonafide_cm_scores, spoof_cm_scores,
+                 tar_asv_scores=None, non_asv_scores=None,
+                 spoof_asv_scores=None,
+                 flag_verbose=False, flag_legacy=True):
+    """
+    mintDCF, eer, eer_thre = tDCF_wrapper(bonafide_cm_scores, spoof_cm_scores,
+                 tar_asv_scores=None, non_asv_scores=None,
+                 spoof_asv_scores=None, flag_verbose=False, flag_legacy=True)
+
+
+    input
+    -----
+      bonafide_cm_scores: np.array of bona fide scores
+      spoof_cm_scores: np.array of spoof scores
+      tar_asv_scores: np.array of ASV target scores, or None
+      non_asv_scores: np.array of ASV non-target scores, or None
+      spoof_asv_scores: np.array of ASV spoof trial scores, or None,
+      flag_verbose: print detailed messages
+      flag_legacy: True: use legacy min-tDCF in ASVspoof2019
+                   False: use min-tDCF revised
+
+    output
+    ------
+      mintDCF: scalar,  value of min-tDCF
+      eer: scalar, value of EER
+      eer_thre: scalar, value of threshold corresponding to EER
+
+    """
+    if flag_legacy:
+        Pspoof = 0.05
+        cost_model = {
+            'Pspoof': Pspoof,  # Prior probability of a spoofing attack
+            'Ptar': (1 - Pspoof) * 0.99,  # Prior probability of target speaker
+            'Pnon': (1 - Pspoof) * 0.01,  # Prior probability of nontarget speaker
+            'Cmiss_asv': 1,  # Cost of ASV system falsely rejecting target speaker
+            'Cfa_asv': 10,  # Cost of ASV system falsely accepting nontarget speaker
+            'Cmiss_cm': 1,  # Cost of CM system falsely rejecting target speaker
+            'Cfa_cm': 10,  # Cost of CM system falsely accepting spoof
+        }
+    else:
+        Pspoof = 0.05
+        cost_model = {
+            'Pspoof': Pspoof,  # Prior probability of a spoofing attack
+            'Ptar': (1 - Pspoof) * 0.99,  # Prior probability of target speaker
+            'Pnon': (1 - Pspoof) * 0.01,  # Prior probability of nontarget speaker
+            'Cmiss': 1,  # Cost of tandem system falsely rejecting target speaker
+            'Cfa': 10,  # Cost of tandem system falsely accepting nontarget speaker
+            'Cfa_spoof': 10,  # Cost of tandem system falsely accepting spoof
+        }
+
+
+    # read provided ASV scores
+    if tar_asv_scores is None or non_asv_scores is None or \
+       spoof_asv_scores is None:
+        file_name = os.path.dirname(__file__)+ \
+            '/data/asvspoof2021/ASVspoof2021.LA.asv.eval.gi.trl.scores.bin'
+        data = nii_io.f_read_raw_mat(file_name, 2)
+        tar_asv_scores = data[data[:, 1] == 2, 0]
+        non_asv_scores = data[data[:, 1] == 1, 0]
+        spoof_asv_scores = data[data[:, 1] == 0, 0]
+
+    eer_asv, asv_threshold = compute_eer(tar_asv_scores, non_asv_scores)
+    eer_cm, eer_threshold = compute_eer(bonafide_cm_scores, spoof_cm_scores)
+
+
+    [Pfa_asv,Pmiss_asv,Pmiss_spoof_asv,Pfa_spoof_asv] = obtain_asv_error_rates(
+        tar_asv_scores, non_asv_scores, spoof_asv_scores, asv_threshold)
+
+    if flag_legacy:
+        tDCF_curve, CM_thresholds = compute_tDCF_legacy(
+            bonafide_cm_scores, spoof_cm_scores,
+            Pfa_asv, Pmiss_asv, Pmiss_spoof_asv, cost_model, flag_verbose)
+    else:
+        tDCF_curve, CM_thresholds = compute_tDCF(
+            bonafide_cm_scores, spoof_cm_scores,
+            Pfa_asv, Pmiss_asv, Pfa_spoof_asv, cost_model, flag_verbose)
+
+    min_tDCF_index = np.argmin(tDCF_curve)
+    min_tDCF = tDCF_curve[min_tDCF_index]
+
+    return min_tDCF, eer_cm, eer_threshold
+
 
 
 def ASVspoof2019_evaluate(bonafide_cm_scores, bonafide_cm_file_names,

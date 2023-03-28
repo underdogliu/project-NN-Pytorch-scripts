@@ -141,7 +141,7 @@ def main():
             prj_conf.test_set_name, \
             t_lst, \
             prj_conf.test_input_dirs,
-            prj_conf.input_exts, 
+            [".wav"], 
             prj_conf.input_dims, 
             prj_conf.input_reso, 
             prj_conf.input_norm,

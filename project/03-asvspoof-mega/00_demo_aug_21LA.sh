@@ -43,15 +43,16 @@ NC='\033[0m'
 ENVFILE=$PWD/../../env.sh
 
 # a wrapper to run EER and min-tDCF, given scores by the model
-EVALSCRIPT=$PWD/02_evaluate.py
+EVALSCRIPT=$PWD/02_evaluate_2021.py
 
 # script of main.py (used by all the models)
 MAINSCRIPT=$PWD/01_main.py
 MAINSCRIPT_RAWNET=$PWD/01_main_rawnet.py
-# configuration to run the model (shared by all the models)
 
-AUG_TYPE=mp3
-CONFIGSCRIPT=$PWD/01_config_aug_${AUG_TYPE}.py
+AUGTYPE=noise
+
+# configuration to run the model (shared by all the models)
+CONFIGSCRIPT=$PWD/01_config_21LA.py
 CONFIGSCRIPT_RAWNET=$PWD/01_config_rawnet.py
 
 # for convenience, trial length are logged into these binary files
@@ -152,37 +153,37 @@ python ${EVALSCRIPT} ${LOGFILE}
 
 #############
 # step 2. run pre-trained model by Xin and compute EER
-# echo -e "\n${RED}=======================================================${NC}"
-# echo -e "${RED}Step2. run pre-trained ${MODEL} on eval set using your GPU server${NC}"
-# echo -e "The job will run in background for ~20 minutes. Please wait."
-# echo -e "(Model ${MODEL} was trained on NII's server.)"
+#echo -e "\n${RED}=======================================================${NC}"
+#echo -e "${RED}Step2. run pre-trained ${MODEL} on eval set using your GPU server${NC}"
+#echo -e "The job will run in background for ~20 minutes. Please wait."
+#echo -e "(Model ${MODEL} was trained on NII's server.)"
 
-# LOGFILE=log_output_testset_pretrained
-# python main.py --inference --model-forward-with-file-name --trained-model __pretrained/trained_network.pt > ${LOGFILE} 2>${LOGFILE}_err
+#LOGFILE=log_output_testset_pretrained_21LA
+#python main.py --inference --model-forward-with-file-name --trained-model __pretrained/trained_network.pt > ${LOGFILE} 2>${LOGFILE}_err
 
-# echo -e "\n${RED}Please check the following log files \n\t${LOGFILE}\n\t${LOGFILE}_err${NC}"
+#echo -e "\n${RED}Please check the following log files \n\t${LOGFILE}\n\t${LOGFILE}_err${NC}"
 
-# echo -e "\n${RED}This is the result using pre-trained model on your GPU ${NC}"
-# python ${EVALSCRIPT} ${LOGFILE}
+#echo -e "\n${RED}This is the result using pre-trained model on your GPU ${NC}"
+#python ${EVALSCRIPT} ${LOGFILE}
 
 #############
 # step 3. train new model, and run evaluation
-echo -e "\n${RED}=======================================================${NC}"
-echo -e "${RED}Step3. train a new model ${MODEL} using your GPU server${NC}"
-echo -e "Current training recipe requires 16GB GPU memory."
-echo -e "If it is too much for your GPU, please reduce --batch-size in */*/00_train.sh before running this step"
-echo -e "The job will run in backgroun for a few hours. Please wait."
-echo -e "You can also run this script in background. See README of this script"
+#echo -e "\n${RED}=======================================================${NC}"
+#echo -e "${RED}Step3. train a new model ${MODEL} using your GPU server${NC}"
+#echo -e "Current training recipe requires 16GB GPU memory."
+#echo -e "If it is too much for your GPU, please reduce --batch-size in */*/00_train.sh before running this step"
+#echo -e "The job will run in backgroun for a few hours. Please wait."
+#echo -e "You can also run this script in background. See README of this script"
 
 # train using prepared script 
 # (notice that random seed is different from different RUN)
-bash 00_train.sh
-echo -e "\n${RED}Please check log_train and log_err{NC}"
+#bash 00_train.sh
+#echo -e "\n${RED}Please check log_train and log_err{NC}"
 
 echo -e "\n${RED}Evaluating the trained model ${NC}"
 echo -e "The job will run in backgroun for ~20 minutes. Please wait."
 
-LOGFILE=log_output_testset_aug_${AUG_TYPE}
+LOGFILE=log_output_testset_aug_${AUGTYPE}_21LA
 python main.py --inference --model-forward-with-file-name > ${LOGFILE} 2>${LOGFILE}_err
 
 echo -e "\n${RED}Please check the following log files \n\t${LOGFILE}\n\t${LOGFILE}_err${NC}"
