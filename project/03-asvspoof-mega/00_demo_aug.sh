@@ -50,7 +50,7 @@ MAINSCRIPT=$PWD/01_main.py
 MAINSCRIPT_RAWNET=$PWD/01_main_rawnet.py
 # configuration to run the model (shared by all the models)
 
-AUG_TYPE=mp3
+AUG_TYPE=reverb
 CONFIGSCRIPT=$PWD/01_config_aug_${AUG_TYPE}.py
 CONFIGSCRIPT_RAWNET=$PWD/01_config_rawnet.py
 

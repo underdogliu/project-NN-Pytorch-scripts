@@ -49,7 +49,7 @@ EVALSCRIPT=$PWD/02_evaluate_2021.py
 MAINSCRIPT=$PWD/01_main.py
 MAINSCRIPT_RAWNET=$PWD/01_main_rawnet.py
 
-AUGTYPE=noise
+AUGTYPE=reverb
 
 # configuration to run the model (shared by all the models)
 CONFIGSCRIPT=$PWD/01_config_21LA.py
