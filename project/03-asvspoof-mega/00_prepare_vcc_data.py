@@ -26,7 +26,7 @@ if __name__ == "__main__":
     with open(src_21DF_dir + "/protocol.txt", "r") as srcd:
         for line in srcd:
             spk, utt, dataset, type_attack, decision = line.split()
-            if type_attack != "bonafide":
+            if decision != "bonafide":
                 continue
             if dataset == "asvspoof":
                 continue
@@ -66,7 +66,7 @@ if __name__ == "__main__":
                 tard.write(line + "\n")
     os.makedirs(tar_21DF_dir + "/scp", exist_ok=True)
     os.system(
-        "cat {0} | cut -d' ' -f3 | sort -u > {1}".format(
+        "cat {0} | cut -d' ' -f2 | sort -u > {1}".format(
             tar_21DF_dir + "/protocol.txt", tar_21DF_dir + "/scp/test.lst"
         )
     )
