@@ -9,14 +9,7 @@ import random
 import sys
 
 import time
-
 from shutil import copyfile
-from pydub import AudioSegment
-
-
-def wav2flac(src_wav_path, tar_flac_path):
-    song = AudioSegment.from_wav(src_wav_path)
-    song.export(tar_flac_path, format="flac")
 
 
 if __name__ == "__main__":
@@ -33,6 +26,8 @@ if __name__ == "__main__":
     with open(src_21DF_dir + "/protocol.txt", "r") as srcd:
         for line in srcd:
             spk, utt, dataset, type_attack, decision = line.split()
+            if type_attack != "bonafide":
+                continue
             if dataset == "asvspoof":
                 continue
             elif dataset == "vcc2018":
@@ -76,7 +71,7 @@ if __name__ == "__main__":
         )
     )
 
-    # Write the ASVspoof 2019 LA new training data
+    # Write the protocol.txt and scp for 2019 LA
     os.system("cp {0} {1}".format(src_19LA_dir + "/protocol.txt", tar_19LA_dir))
     os.system(
         "mkdir -p {0} {1} && cp {2} {0}".format(
@@ -103,13 +98,17 @@ if __name__ == "__main__":
                 else:
                     utterances = vcc_lists[spk]
                     for item in utterances:
-                        src_wav_path = src_21DF_dir + "/eval/{0}.wav".format(item)
+                        # src_flac_path = src_21DF_dir + "/eval/{0}.flac".format(item)
+                        src_flac_path = (
+                            "DATA/ASVspoof2021_DF_eval/flac/{0}.flac".format(item)
+                        )
                         tar_flac_path = tar_19LA_dir + "/train_dev/{0}.flac".format(
                             item
                         )
+                        copyfile(src_flac_path, tar_flac_path)
                         # convert_cmd = "ffmpeg -hide_banner -loglevel error -i {0} -af aformat=s16:16000 {1}".format(
                         #     src_wav_path, tar_flac_path
                         # )
                         # os.system(convert_cmd)
-                        wav2flac(src_wav_path, tar_flac_path)
+                        # wav2flac(src_wav_path, tar_flac_path)
                         tard.write(item + "\n")
