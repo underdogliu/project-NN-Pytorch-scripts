@@ -8,6 +8,8 @@ import os
 import random
 import sys
 
+import time
+
 from shutil import copyfile
 
 
@@ -37,6 +39,7 @@ if __name__ == "__main__":
                     vcc2020_lists[spk] = [utt]
                 else:
                     vcc2020_lists[spk].append(utt)
+    vcc_lists = {**vcc2018_lists, **vcc2020_lists}
 
     # select the speakers to:
     # 1. Bonafide utterances go to training side
@@ -45,8 +48,8 @@ if __name__ == "__main__":
     spks_vcc2020 = list(vcc2020_lists.keys())
     random.shuffle(spks_vcc2018)
     random.shuffle(spks_vcc2020)
-    selected_spks_vcc2018 = spks_vcc2018[: int(len(spks_vcc2018 / 2))]
-    selected_spks_vcc2020 = spks_vcc2020[: int(len(spks_vcc2020 / 2))]
+    selected_spks_vcc2018 = spks_vcc2018[: int(len(spks_vcc2018) / 2)]
+    selected_spks_vcc2020 = spks_vcc2020[: int(len(spks_vcc2020) / 2)]
     selected_spks = selected_spks_vcc2018 + selected_spks_vcc2020
 
     # Write the protocol.txt and scp for 2021 DF
@@ -69,7 +72,7 @@ if __name__ == "__main__":
     # Write the ASVspoof 2019 LA new training data
     os.system("cp {0} {1}".format(src_19LA_dir + "/protocol.txt", tar_19LA_dir))
     os.system(
-        "mkdir -p {0} {2} && cp {1} {0}".format(
+            "mkdir -p {0} {1} && cp {2} {0}".format(
             tar_19LA_dir + "/scp",
             tar_19LA_dir + "/eval",
             src_19LA_dir + "/scp/train.lst",
@@ -91,12 +94,10 @@ if __name__ == "__main__":
                 if spk in selected_spks:
                     continue
                 else:
-                    utterances = selected_spks_vcc2018[spk]
+                    utterances = vcc_lists[spk]
                     for item in utterances:
                         src_wav_path = src_21DF_dir + "/eval/{0}.wav".format(item)
-                        tar_flac_path = (
-                            tar_19LA_dir + "/train_dev/{0}.flac".format(item),
-                        )
+                        tar_flac_path = tar_19LA_dir + "/train_dev/{0}.flac".format(item)
                         convert_cmd = "ffmpeg -hide_banner -loglevel error -i {0} -af aformat=s16:16000 {1}".format(
                             src_wav_path, tar_flac_path
                         )
